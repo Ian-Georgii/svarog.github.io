@@ -12,12 +12,15 @@
       font-family: 'InterBold';
       src: url('fonts/Inter-Bold.woff2') format('woff2'),
       url('fonts/Inter-Bold.woff') format('woff');
-      font-weight: bold;
+      font-weight: 700; /* Very important */
+      font-style: normal;   
+}
+    @font-face {
+      font-family: 'Bootcamp';
+      src: url('fonts/Bootcamp-Bold.woff2') format('woff2');
+      font-weight: 700;
       font-style: normal;
 }
-
-    }
-
     /* Base resets and styling */
     * {
       margin: 0;
@@ -84,6 +87,7 @@
     /* Shuffle hover effect for text elements - Use original font size baseline */
     .shuffle-hover {
       font-family: 'Bootcamp', sans-serif;
+      font-weight: 700;
       /* Original baseline: 2rem approx 32px. Min 14px, Max 36px */
       /* 32px / 1275px * 100 = 2.51vw */
       font-size: clamp(14px, calc(32 / var(--ref-width) * 100vw), 36px);
