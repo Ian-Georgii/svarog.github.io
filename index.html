@@ -2,106 +2,489 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Svarog – Pioneering Safe Demining</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVAROG</title>
+  <link rel="icon" href="logo_small.ico" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=bootcamp@700&display=swap" rel="stylesheet">
   <style>
-    body {
+    @font-face {
+      font-family: 'InterBold';
+      /* Ensure this path is correct relative to your HTML file */
+      src: url('fonts/Inter-Bold.ttf') format('truetype');
+      font-weight: bold; /* Or 700 */
+      font-style: normal;
+    }
+
+    /* Base resets and styling */
+    * {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #0d1117;
-      color: #f0f6fc;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      background: #fff;
+      color: #000;
+      font-family: Arial, sans-serif;
+       /* Allow scrolling if zoomed content overflows */
+      overflow: auto;
+      width: 100%;
     }
 
-    header {
-      padding: 80px 20px 40px;
-      text-align: center;
+    /* Reference width for calculations: 1275px */
+    :root {
+      --ref-width: 1275;
     }
 
-    header h1 {
-      font-size: 3em;
-      margin-bottom: 0.3em;
+    /* Wrapper for zoom functionality */
+    #zoom-wrapper {
+      position: relative;
+      width: 100%; /* Takes full width */
+      transform-origin: top left; /* Zoom originates from top-left */
+      transition: transform 0.3s ease-out; /* Smooth zoom transition */
     }
 
-    header p {
-      font-size: 1.2em;
-      color: #8b949e;
+    /* SVG background container */
+    .design-container {
+      position: relative;
+      z-index: 1;
+      width: 100%; /* SVG scales with wrapper */
+    }
+    .design-container img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    section {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-      border-top: 1px solid #21262d;
+    /* Overlay container for text elements */
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3; /* Above the SVG background */
+      pointer-events: none; /* Allows background interactions if needed */
     }
 
-    h2 {
-      color: #58a6ff;
-      font-size: 2em;
-      margin-bottom: 0.5em;
+    /* Logo styling – using vw */
+    #logo {
+      position: absolute;
+      /* 50px / 1275px * 100 = 3.92vw */
+      top: calc(50 / var(--ref-width) * 100vw);
+      left: 49.5%;
+      transform: translateX(-50%);
+      /* 190px / 1275px * 100 = 14.9vw */
+      height: calc(190 / var(--ref-width) * 100vw);
+      pointer-events: auto;
     }
 
-    ul {
-      line-height: 1.8em;
+    /* Shuffle hover effect for text elements - Use original font size baseline */
+    .shuffle-hover {
+      font-family: 'Bootcamp', sans-serif;
+      /* Original baseline: 2rem approx 32px. Min 14px, Max 36px */
+      /* 32px / 1275px * 100 = 2.51vw */
+      font-size: clamp(14px, calc(32 / var(--ref-width) * 100vw), 36px);
+      color: #111;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+      transition: opacity 0.2s ease;
+      min-height: 1.2em; /* Relative to font-size */
+      vertical-align: middle;
+      min-width: 5ch;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
-    footer {
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #6e7681;
-      border-top: 1px solid #21262d;
+    /* Contact text – using vw */
+    #contact {
+      position: absolute;
+      /* 102px / 1275px * 100 = 8vw */
+      top: calc(102 / var(--ref-width) * 100vw);
+      /* 95px / 1275px * 100 = 7.45vw */
+      left: calc(95 / var(--ref-width) * 100vw);
+      text-decoration: none;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 0.2s ease; /* Keep opacity transition from original */
     }
+
+    /* Donate text – using vw */
+    #donate {
+      position: absolute;
+      /* 102px / 1275px * 100 = 8vw */
+      top: calc(102 / var(--ref-width) * 100vw);
+      /* 100px / 1275px * 100 = 7.84vw */
+      right: calc(100 / var(--ref-width) * 100vw);
+      text-decoration: none;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 0.2s ease; /* Keep opacity transition from original */
+    }
+
+    /* Running text (typewriter animation) – using vw */
+    #running-text {
+      position: absolute;
+      /* 268px / 1275px * 100 = 21.02vw */
+      top: calc(268 / var(--ref-width) * 100vw);
+      /* 95px / 1275px * 100 = 7.45vw */
+      left: calc(95 / var(--ref-width) * 100vw);
+      font-family: 'InterBold', Arial, sans-serif; /* Use InterBold */
+      /* Original baseline: 2rem approx 32px. Min 14px, Max 36px */
+      /* 32px / 1275px * 100 = 2.51vw */
+      font-size: clamp(14px, calc(32 / var(--ref-width) * 100vw), 36px);
+      color: #111;
+    }
+
+    /* Pitch video label box (clickable link) - using vw */
+    #pitch-video-label {
+      position: absolute;
+      /* 380px / 1275px * 100 = 29.8vw */
+      top: calc(380 / var(--ref-width) * 100vw);
+      /* 155px / 1275px * 100 = 12.16vw */
+      right: calc(155 / var(--ref-width) * 100vw);
+      font-family: 'InterBold', Arial, sans-serif; /* Use InterBold */
+      /* Original baseline: 1.6rem approx 25.6px. Min 12px, Max 30px */
+      /* 25.6px / 1275px * 100 = 2.01vw */
+      font-size: clamp(12px, calc(25.6 / var(--ref-width) * 100vw), 30px);
+      color: #111;
+      background-color: rgba(255, 255, 255, 0.85);
+      /* Original padding: 8px 16px */
+      /* 8px / 1275px * 100 = 0.63vw */
+      /* 16px / 1275px * 100 = 1.25vw */
+      padding: clamp(4px, calc(8 / var(--ref-width) * 100vw), 10px) clamp(8px, calc(16 / var(--ref-width) * 100vw), 20px);
+      /* Original radius: 4px */
+      /* 4px / 1275px * 100 = 0.31vw */
+      border-radius: clamp(2px, calc(4 / var(--ref-width) * 100vw), 6px);
+      pointer-events: auto;
+      text-decoration: none;
+    }
+
+    /* Original hover effect from index_03.html */
+    .shuffle-hover:hover {
+      opacity: 0.85;
+    }
+
+    /* Basic styles for zoom controls - HIDE THEM */
+    .zoom-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        display: none; /* Hide the controls */
+        background: rgba(0,0,0,0.5);
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .zoom-controls button {
+        font-size: 18px;
+        padding: 5px 10px;
+        margin: 0 3px;
+        cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>Svarog</h1>
-    <p>Pioneering Safe Demining with Aerial Intelligence</p>
-  </header>
 
-  <section>
-    <h2>The Problem</h2>
-    <ul>
-      <li>174,000 km² contaminated</li>
-      <li>6,000+ casualties worldwide</li>
-      <li>Up to 100 years to clear all mines</li>
-      <li>Ukraine’s farmland: $225M wheat potential at risk</li>
-    </ul>
-  </section>
+  <!-- Zoom Controls (Hidden) -->
+  <div class="zoom-controls">
+      <button id="zoom-out">-</button>
+      <button id="zoom-in">+</button>
+      <button id="zoom-reset">Reset</button>
+  </div>
 
-  <section>
-    <h2>Our Solution</h2>
-    <p>We use a modular sensor platform mounted on drones to detect surface and shallow-depth landmines, combining:</p>
-    <ul>
-      <li>Multispectral + Infrared Cameras</li>
-      <li>LiDAR + Ground Penetrating Radar</li>
-      <li>Magnetometers & Electromagnetic Induction</li>
-      <li>AI-powered environmental and terrain analysis</li>
-    </ul>
-  </section>
+  <!-- Wrapper for scaling -->
+  <div id="zoom-wrapper">
+    <!-- SVG background -->
+    <div class="design-container">
+      <img src="design_03hidden_4.svg" alt="SVG Background">
+    </div>
 
-  <section>
-    <h2>Our Progress</h2>
-    <p>Simulations and real-life testing show reliable mine detection as deep as 5cm in soil. Phase 1 development is complete.</p>
-  </section>
+    <!-- Overlay container -->
+    <div class="overlay-container">
+      <!-- Logo -->
+      <a href="#top">
+        <img id="logo" src="logoAsset 4.svg" alt="Logo">
+      </a>
+      <!-- Contact -->
+      <a id="contact" class="shuffle-hover" data-original="Contact" href="mailto:ian.zhelezniak24@imperial.ac.uk">Contact</a>
+      <!-- Donate -->
+      <a id="donate" class="shuffle-hover" data-original="Donate" target="_blank" href="https://revolut.me/iangeo2drb">Donate</a>
+      <!-- Running text -->
+      <div id="running-text" class="shuffle-text"></div> <!-- Removed shuffle-text class if not used by original JS -->
+      <!-- Pitch video label -->
+      <a id="pitch-video-label" href="#" target="_blank">Watch our pitch video</a>
+    </div>
+  </div>
 
-  <section>
-    <h2>Market Opportunity</h2>
-    <ul>
-      <li>$100B+ global demining market</li>
-      <li>5–10× faster clearance using drone-based scanning</li>
-      <li>Potential to reclaim 470,000 hectares of farmland in Ukraine</li>
-    </ul>
-  </section>
+  <!-- JavaScript for animations AND Zoom -->
+  <script>
+    // --- Typewriter effect for running text (Original) ---
+    const phrases = [
+      "174,000 km² of Ukraine contaminated, area larger than England",
+      "70–100 years to demine Ukraine alone",
+      "$37 billion to demine Ukraine alone",
+      "6,000+ casualties in 2024",
+      "25× more mines laid than cleared"
+    ];
+    let phraseIndex = 0;
+    const runningTextEl = document.getElementById("running-text");
+    let typeIntervalId = null; // Keep variable to manage interval
 
-  <section>
-    <h2>Our Team</h2>
-    <p><strong>Nazar Lutskiv</strong> – Embedded Systems & Firmware Engineering</p>
-    <p><strong>Ian Zhelezniak</strong> – Mechanical Engineering, Prototyping, Business Development</p>
-  </section>
+    function typePhrase() {
+      if (!runningTextEl) return;
+      runningTextEl.textContent = '';
+      const phrase = phrases[phraseIndex];
+      let charIndex = 0;
 
-  <footer>
-    © 2025 Svarog | Built by students at Imperial College London
-  </footer>
+      // Clear previous interval if any (Good practice)
+      if (typeIntervalId) clearInterval(typeIntervalId);
+
+      typeIntervalId = setInterval(() => {
+        // Check if element still exists (Good practice)
+        const currentRunningTextEl = document.getElementById("running-text");
+        if (!currentRunningTextEl) {
+          clearInterval(typeIntervalId);
+          return;
+        }
+
+        if (charIndex > phrase.length) {
+          clearInterval(typeIntervalId);
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          // Use setTimeout to ensure it runs after current interval clears
+          setTimeout(typePhrase, 2000);
+        } else {
+          // Check element again before setting textContent
+          if (document.getElementById("running-text")) {
+             runningTextEl.textContent = phrase.slice(0, charIndex++);
+          } else {
+             clearInterval(typeIntervalId); // Stop if element disappeared mid-typing
+          }
+        }
+      }, 50); // Original interval speed
+    }
+
+    // --- Enhanced Shuffle animation (ORIGINAL from index_03.html) ---
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const animationFrameMs = 30; // Original value
+    const shuffleFramesPerChar = 6; // Original value
+    const fastRevealDelay = 0; // Original value
+    const slowRevealDelay = 1; // Original value
+
+    // !! THIS IS THE animateShuffle function FROM YOUR ORIGINAL FILE !!
+    function animateShuffle(element, targetText, direction = 'ltr') {
+      const startText = element.textContent;
+      const targetLength = targetText.length;
+      const startLength = startText.length;
+      const isContracting = startLength > targetLength;
+      const minLength = Math.min(targetLength, startLength);
+      const maxLength = Math.max(targetLength, startLength);
+
+      let stableCount = 0;
+      let frameCounter = 0;
+      let framesSinceLastStep = 0;
+
+      // Clear any previous interval for this element
+      clearInterval(parseInt(element.dataset.intervalId || '0'));
+
+      const interval = setInterval(() => {
+        frameCounter++;
+        framesSinceLastStep++;
+        let advanceStep = false;
+
+        // Determine if we should advance the stable character count
+        if (stableCount < targetLength) {
+          let isInOverlap = stableCount < minLength;
+          let requiredDelay = (isInOverlap && !isContracting) || (isContracting && stableCount >= targetLength - minLength)
+                               ? fastRevealDelay
+                               : slowRevealDelay;
+          if (framesSinceLastStep > requiredDelay) {
+            advanceStep = true;
+            stableCount++;
+            framesSinceLastStep = 0;
+          }
+        }
+
+        let outputChars = [];
+        let visibleLength = 0;
+
+        // Calculate how many characters should be visible
+        if (isContracting) {
+          let charsToRemoveTotal = startLength - targetLength;
+          let progressRatio = stableCount / targetLength;
+          let charsRemoved = Math.min(charsToRemoveTotal, Math.floor(charsToRemoveTotal * progressRatio));
+          visibleLength = startLength - charsRemoved;
+        } else {
+          visibleLength = Math.min(maxLength, stableCount + 1); // Simpler expansion visibility
+        }
+        visibleLength = Math.max(targetLength, visibleLength); // Ensure at least target length visible potentially
+        if (stableCount === targetLength) visibleLength = targetLength; // Final state adjustment
+
+
+        // Build the output string character by character
+        for (let i = 0; i < visibleLength; i++) {
+          let charIndex = i;
+          let char = '';
+          let isStable = false;
+          let isActiveBoundary = false;
+
+          if (direction === 'ltr') {
+            let targetChar = charIndex < targetLength ? targetText[charIndex] : '';
+            isStable = charIndex < stableCount;
+            isActiveBoundary = charIndex === stableCount && stableCount < targetLength;
+
+            if (isStable) {
+              char = targetChar;
+            } else if (isActiveBoundary && framesSinceLastStep < shuffleFramesPerChar) {
+              char = letters[Math.floor(Math.random() * letters.length)];
+            } else if (isActiveBoundary) {
+              char = targetChar; // Reveal the boundary character
+            } else if (charIndex < startLength) { // Scramble remaining old chars (original logic)
+              char = letters[Math.floor(Math.random() * letters.length)];
+            } else {
+              char = ''; // Might show briefly during expansion if visibleLength calculation differs slightly
+            }
+          } else { // direction === 'rtl'
+            let indexFromRight = visibleLength - 1 - charIndex;
+            let targetIndex = targetLength - 1 - indexFromRight;
+            let startIndex = startLength - 1 - indexFromRight; // Original index from right
+
+            isStable = indexFromRight < stableCount;
+            isActiveBoundary = indexFromRight === stableCount && stableCount < targetLength;
+            let targetChar = targetIndex >= 0 ? targetText[targetIndex] : '';
+
+            if (isStable) {
+              char = targetChar;
+            } else if (isActiveBoundary && framesSinceLastStep < shuffleFramesPerChar) {
+              char = letters[Math.floor(Math.random() * letters.length)];
+            } else if (isActiveBoundary) {
+              char = targetChar;
+            } else if (startIndex >= 0 && charIndex < startLength) { // Scramble remaining old chars from right (original logic)
+               char = letters[Math.floor(Math.random() * letters.length)];
+            } else {
+              char = '';
+            }
+          }
+          outputChars.push(char);
+        }
+
+        // Check if element still exists before updating (Good practice)
+        if (document.body.contains(element)) {
+            element.textContent = outputChars.join('');
+        } else {
+            clearInterval(interval); // Stop if element removed
+            return;
+        }
+
+
+        // Check for completion
+        if (stableCount >= targetLength && framesSinceLastStep >= shuffleFramesPerChar) {
+          clearInterval(interval);
+           if (document.body.contains(element)) { // Check again before final set
+               element.textContent = targetText; // Ensure final text is correct
+           }
+          element.dataset.intervalId = '0';
+        }
+
+        // Timeout safety break (Original logic/limit)
+         // Adjusted timeout logic slightly to be safer based on original values
+        if (parseInt(element.dataset.intervalId || '0') > 0 && frameCounter > maxLength * (slowRevealDelay + shuffleFramesPerChar + 1) * 3) {
+          console.warn("Shuffle animation forced stop (timeout) for:", element);
+          clearInterval(interval);
+           if (document.body.contains(element)) {
+               element.textContent = targetText;
+           }
+          element.dataset.intervalId = '0';
+        }
+      }, animationFrameMs);
+
+      // Store the interval ID on the element
+      element.dataset.intervalId = interval.toString();
+    }
+
+
+    // --- Zoom Functionality (Added) ---
+    const zoomWrapper = document.getElementById('zoom-wrapper');
+    const zoomInBtn = document.getElementById('zoom-in');
+    const zoomOutBtn = document.getElementById('zoom-out');
+    const zoomResetBtn = document.getElementById('zoom-reset');
+    let currentScale = 1.0;
+    const scaleStep = 0.1;
+    const minScale = 0.5; // Min zoom level
+    const maxScale = 3.0; // Max zoom level
+
+    function applyZoom() {
+        if (zoomWrapper) {
+            // Check for extreme values that might cause issues (optional)
+            const scaleValue = Math.max(0.1, Math.min(10, currentScale)); // Clamp scale just in case
+            zoomWrapper.style.transform = `scale(${scaleValue})`;
+        }
+    }
+
+    function zoomIn() {
+        currentScale = Math.min(maxScale, currentScale + scaleStep);
+        applyZoom();
+    }
+
+    function zoomOut() {
+        currentScale = Math.max(minScale, currentScale - scaleStep);
+        applyZoom();
+    }
+
+    function resetZoom() {
+        currentScale = 1.0;
+        applyZoom();
+    }
+
+    // --- Initialize everything on DOMContentLoaded ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // Start typewriter (Original call)
+      typePhrase();
+
+      // Setup shuffle hover effects (Using original animateShuffle)
+      const contactEl = document.getElementById("contact");
+      const donateEl = document.getElementById("donate");
+
+      if (contactEl) {
+        const hoverTextContact = "ian.zhelezniak24@imperial.ac.uk";
+        // Ensure original text is stored from the attribute
+        if (!contactEl.dataset.original) contactEl.dataset.original = "Contact"; // Set default if needed
+        contactEl.addEventListener('mouseenter', () => {
+          animateShuffle(contactEl, hoverTextContact, 'ltr');
+        });
+        contactEl.addEventListener('mouseleave', () => {
+          // Use the stored original text
+          animateShuffle(contactEl, contactEl.dataset.original, 'ltr');
+        });
+      }
+
+      if (donateEl) {
+        const hoverTextDonate = "Support the Project";
+         // Ensure original text is stored from the attribute
+         if (!donateEl.dataset.original) donateEl.dataset.original = "Donate"; // Set default if needed
+        donateEl.addEventListener('mouseenter', () => {
+          animateShuffle(donateEl, hoverTextDonate, 'rtl');
+        });
+        donateEl.addEventListener('mouseleave', () => {
+           // Use the stored original text
+          animateShuffle(donateEl, donateEl.dataset.original, 'rtl');
+        });
+      }
+
+      // Setup zoom controls listeners (even if buttons hidden)
+      if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
+      if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
+      if (zoomResetBtn) zoomResetBtn.addEventListener('click', resetZoom);
+
+      // Initial application of zoom state
+      applyZoom();
+
+    });
+
+  </script>
 </body>
 </html>
