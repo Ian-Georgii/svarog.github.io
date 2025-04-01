@@ -11,16 +11,17 @@
     @font-face {
       font-family: 'InterBold';
       src: url('fonts/Inter-Bold.woff2') format('woff2'),
-      url('fonts/Inter-Bold.woff') format('woff');
+           url('fonts/Inter-Bold.woff') format('woff');
       font-weight: 700; /* Very important */
       font-style: normal;   
-}
+    }
     @font-face {
       font-family: 'Bootcamp';
-      src: url('fonts/Bootcamp-Bold.woff2') format('woff2');
+      src: url('fonts/Bootcamp-Bold.woff2') format('woff2'),
+           url('fonts/Bootcamp-Bold.woff') format('woff');
       font-weight: 700;
       font-style: normal;
-}
+    }
     /* Base resets and styling */
     * {
       margin: 0;
@@ -214,14 +215,14 @@
     <div class="overlay-container">
       <!-- Logo -->
       <a href="#top">
-        <img id="logo" src="logoAsset 4.svg" alt="Logo">
+        <img id="logo" src="logo1Asset 6.svg" alt="Logo">
       </a>
       <!-- Contact -->
       <a id="contact" class="shuffle-hover" data-original="Contact" href="mailto:ian.zhelezniak24@imperial.ac.uk">Contact</a>
       <!-- Donate -->
       <a id="donate" class="shuffle-hover" data-original="Donate" target="_blank" href="https://revolut.me/iangeo2drb">Donate</a>
       <!-- Running text -->
-      <div id="running-text" class="shuffle-text"></div> <!-- Removed shuffle-text class if not used by original JS -->
+      <div id="running-text" class="shuffle-text"></div>
       <!-- Pitch video label -->
       <a id="pitch-video-label" href="#" target="_blank">Watch our pitch video</a>
     </div>
@@ -286,7 +287,7 @@
       const startText = element.textContent;
       const targetLength = targetText.length;
       const startLength = startText.length;
-      const isContracting = startLength > targetLength;
+      const isContracting = startText.length > targetText.length;
       const minLength = Math.min(targetLength, startLength);
       const maxLength = Math.max(targetLength, startLength);
 
@@ -329,7 +330,6 @@
         }
         visibleLength = Math.max(targetLength, visibleLength); // Ensure at least target length visible potentially
         if (stableCount === targetLength) visibleLength = targetLength; // Final state adjustment
-
 
         // Build the output string character by character
         for (let i = 0; i < visibleLength; i++) {
@@ -386,7 +386,6 @@
             return;
         }
 
-
         // Check for completion
         if (stableCount >= targetLength && framesSinceLastStep >= shuffleFramesPerChar) {
           clearInterval(interval);
@@ -397,7 +396,6 @@
         }
 
         // Timeout safety break (Original logic/limit)
-         // Adjusted timeout logic slightly to be safer based on original values
         if (parseInt(element.dataset.intervalId || '0') > 0 && frameCounter > maxLength * (slowRevealDelay + shuffleFramesPerChar + 1) * 3) {
           console.warn("Shuffle animation forced stop (timeout) for:", element);
           clearInterval(interval);
@@ -412,7 +410,6 @@
       element.dataset.intervalId = interval.toString();
     }
 
-
     // --- Zoom Functionality (Added) ---
     const zoomWrapper = document.getElementById('zoom-wrapper');
     const zoomInBtn = document.getElementById('zoom-in');
@@ -425,8 +422,7 @@
 
     function applyZoom() {
         if (zoomWrapper) {
-            // Check for extreme values that might cause issues (optional)
-            const scaleValue = Math.max(0.1, Math.min(10, currentScale)); // Clamp scale just in case
+            const scaleValue = Math.max(0.1, Math.min(10, currentScale));
             zoomWrapper.style.transform = `scale(${scaleValue})`;
         }
     }
@@ -448,47 +444,38 @@
 
     // --- Initialize everything on DOMContentLoaded ---
     document.addEventListener('DOMContentLoaded', () => {
-      // Start typewriter (Original call)
       typePhrase();
 
-      // Setup shuffle hover effects (Using original animateShuffle)
       const contactEl = document.getElementById("contact");
       const donateEl = document.getElementById("donate");
 
       if (contactEl) {
         const hoverTextContact = "ian.zhelezniak24@imperial.ac.uk";
-        // Ensure original text is stored from the attribute
-        if (!contactEl.dataset.original) contactEl.dataset.original = "Contact"; // Set default if needed
+        if (!contactEl.dataset.original) contactEl.dataset.original = "Contact";
         contactEl.addEventListener('mouseenter', () => {
           animateShuffle(contactEl, hoverTextContact, 'ltr');
         });
         contactEl.addEventListener('mouseleave', () => {
-          // Use the stored original text
           animateShuffle(contactEl, contactEl.dataset.original, 'ltr');
         });
       }
 
       if (donateEl) {
         const hoverTextDonate = "Support the Project";
-         // Ensure original text is stored from the attribute
-         if (!donateEl.dataset.original) donateEl.dataset.original = "Donate"; // Set default if needed
+         if (!donateEl.dataset.original) donateEl.dataset.original = "Donate";
         donateEl.addEventListener('mouseenter', () => {
           animateShuffle(donateEl, hoverTextDonate, 'rtl');
         });
         donateEl.addEventListener('mouseleave', () => {
-           // Use the stored original text
           animateShuffle(donateEl, donateEl.dataset.original, 'rtl');
         });
       }
 
-      // Setup zoom controls listeners (even if buttons hidden)
       if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
       if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
       if (zoomResetBtn) zoomResetBtn.addEventListener('click', resetZoom);
 
-      // Initial application of zoom state
       applyZoom();
-
     });
 
   </script>
