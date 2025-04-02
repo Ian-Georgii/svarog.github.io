@@ -10,13 +10,13 @@
   <style>
     @font-face {
       font-family: 'InterBold';
-      src: url('fonts/Inter-Bold.woff2') format('woff2'),
+      src: url('fonts/Inter-Bold.woff2') format('woff2');
       font-weight: 700;
       font-style: normal;   
     }
     @font-face {
       font-family: 'Bootcamp';
-      src: url('fonts/Bootcamp-Bold.woff2') format('woff2'),
+      src: url('fonts/Bootcamp-Bold.woff2') format('woff2');
       font-weight: 700;
       font-style: normal;
     }
@@ -89,7 +89,7 @@
       font-weight: 700;
       /* Original baseline: 2rem approx 32px. Min 14px, Max 36px */
       /* 32px / 1275px * 100 = 2.51vw */
-      font-size: clamp(14px, calc(32 / var(--ref-width) * 100vw), 36px);
+      font-size: clamp(1px, calc(32 / var(--ref-width) * 100vw), 36px);
       color: #111;
       text-decoration: none;
       display: inline-block;
@@ -140,7 +140,7 @@
       font-family: 'InterBold', Arial, sans-serif; /* Use InterBold */
       /* Original baseline: 2rem approx 32px. Min 14px, Max 36px */
       /* 32px / 1275px * 100 = 2.51vw */
-      font-size: clamp(14px, calc(32 / var(--ref-width) * 100vw), 36px);
+      font-size: clamp(1px, calc(32 / var(--ref-width) * 100vw), 36px);
       color: #111;
     }
 
@@ -148,15 +148,16 @@
     #pitch-video-label {
       position: absolute;
       /* 380px / 1275px * 100 = 29.8vw */
-      top: calc(380 / var(--ref-width) * 100vw);
+      top: calc((382 + 21) / var(--ref-width) * 100vw); /* Shift reference point slightly for center alignment */
+      transform: translateY(-50%);
       /* 155px / 1275px * 100 = 12.16vw */
-      right: calc(155 / var(--ref-width) * 100vw);
+      right: calc(151 / var(--ref-width) * 100vw);
       font-family: 'InterBold', Arial, sans-serif; /* Use InterBold */
       /* Original baseline: 1.6rem approx 25.6px. Min 12px, Max 30px */
       /* 25.6px / 1275px * 100 = 2.01vw */
-      font-size: clamp(12px, calc(25.6 / var(--ref-width) * 100vw), 30px);
+      font-size: clamp(1px, calc(25.8 / var(--ref-width) * 100vw), 30px);
       color: #111;
-      background-color: rgba(255, 255, 255, 0.85);
+      line-height: 1;
       /* Original padding: 8px 16px */
       /* 8px / 1275px * 100 = 0.63vw */
       /* 16px / 1275px * 100 = 1.25vw */
@@ -190,6 +191,26 @@
         margin: 0 3px;
         cursor: pointer;
     }
+    /* Sound Wave Icon styling */
+    #sound-wave-icon {
+      position: absolute;
+      top: calc(373 / var(--ref-width) * 100vw);
+      left: 63.15%;
+      transform: translateX(-50%);
+    }
+    .sound-wave-icon {
+      display: flex;
+      align-items: center;
+      height: calc(60 / var(--ref-width) * 100vw);
+      gap: calc(6 / var(--ref-width) * 100vw);
+    }
+    .sound-wave-icon .bar {
+      width: calc(4 / var(--ref-width) * 100vw);
+      background-color: black;
+      border-radius: calc(2 / var(--ref-width) * 100vw);
+      height: calc(5 / var(--ref-width) * 100vw);
+      transition: height 0.15s ease-out;
+    }
 
   </style>
 </head>
@@ -206,7 +227,7 @@
   <div id="zoom-wrapper">
     <!-- SVG background -->
     <div class="design-container">
-      <img src="design_03hidden_5.svg" alt="SVG Background">
+      <img src="website_2.7_hidden_export.svg" alt="SVG Background">
     </div>
 
     <!-- Overlay container -->
@@ -223,6 +244,16 @@
       <div id="running-text" class="shuffle-text"></div>
       <!-- Pitch video label -->
       <a id="pitch-video-label" href="https://vimeo.com/1071571801/00f6d05bad?ts=0&share=copy" target="_blank">Watch our pitch video</a>
+      <!-- Sound Wave Icon -->
+      <div id="sound-wave-icon">
+        <div class="sound-wave-icon">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -474,6 +505,21 @@
       if (zoomResetBtn) zoomResetBtn.addEventListener('click', resetZoom);
 
       applyZoom();
+      // Sound wave icon animation
+      const soundWaveBars = document.querySelectorAll('#sound-wave-icon .bar');
+      const minBarHeight = 5;  // Reference minimum height in pixels
+      const maxBarHeight = 35; // Reference maximum height in pixels
+      const updateInterval = 150; // Update interval in milliseconds
+
+      function updateSoundWaveBars() {
+          soundWaveBars.forEach(bar => {
+              const randomHeight = Math.floor(Math.random() * (maxBarHeight - minBarHeight + 1)) + minBarHeight;
+              bar.style.height = `calc(${randomHeight} / var(--ref-width) * 100vw)`;
+          });
+      }
+
+      setInterval(updateSoundWaveBars, updateInterval);
+      updateSoundWaveBars();
     });
 
   </script>
